@@ -1,0 +1,20 @@
+﻿{
+    "version": "1.0.0-*",
+
+    "compilationOptions": {
+        "emitEntryPoint": true,
+        "warningsAsErrors": true
+    },
+
+    "dependencies": {
+        "TargetSystem.StandardTargets": "1.0.0-*"
+    },
+
+    "commands": {
+        "DevSandbox": "DevSandbox"
+    },
+
+    "frameworks": {
+        "dnxcore50": { }
+    }
+}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -37,16 +38,25 @@ namespace TargetSystem
                     targets[name] = definition;
                 }
 
-                definition.TargetAction = services =>
+                definition.ExecuteMethod = services =>
                 {
+                    var targetManager = services.GetRequiredService<ITargetManager>();
+
                     var parameters = method.GetParameters();
                     var arguments = new object[parameters.Length];
                     for (var index = 0; index < parameters.Length; index++)
                     {
                         arguments[index] = services.GetService(parameters[index].ParameterType);
+
+                        if (arguments[index] == null)
+                        {
+                            arguments[index] = targetManager.ExecuteByReturnType(parameters[index].ParameterType);
+                        }
                     }
                     return method.Invoke(this, arguments);
                 };
+
+                definition.ResultType = method.ReturnType;
 
                 if (!string.IsNullOrWhiteSpace(targetAttribute.DependsOn))
                 {

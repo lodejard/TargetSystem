@@ -19,13 +19,13 @@ namespace TargetSystem
             var targetManager = serviceProvider.GetRequiredService<ITargetManager>();
             if (args.Length == 0)
             {
-                targetManager.Execute("Default");
+                targetManager.ExecuteByName("Default");
             }
             else
             {
                 foreach (var arg in args)
                 {
-                    targetManager.Execute(arg);
+                    targetManager.ExecuteByName(arg);
                 }
             }
 

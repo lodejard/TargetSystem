@@ -17,19 +17,19 @@
         [Target(DependsOn = "PreClean")]
         public void Clean()
         {
-            _targetManager.Execute("PostClean");
+            _targetManager.ExecuteByName("PostClean");
         }
 
         [Target(DependsOn = "Clean, PreCompile")]
         public void Compile()
         {
-            _targetManager.Execute("PostCompile");
+            _targetManager.ExecuteByName("PostCompile");
         }
 
         [Target(DependsOn = "Compile, PrePackage")]
         public void Package()
         {
-            _targetManager.Execute("PostPackage");
+            _targetManager.ExecuteByName("PostPackage");
         }
     }
 }

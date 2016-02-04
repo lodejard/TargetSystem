@@ -1,27 +1,40 @@
 ﻿using System;
 using TargetSystem;
 
-public class State : ITargetService
+public class SomeSharedState : ITargetService
 {
     public string Something { get; set; }
+}
+
+public class NugetRestoreResults
+{
+    public string[] AllProjectFolders { get; set; }
 }
 
 public class Targets : TargetProvider
 {
     [Target(BeforeTarget = "PreCompile")]
-    public string NugetRestore(State something, ITargetManager t)
+    public NugetRestoreResults NugetRestore(SomeSharedState state)
     {
         Console.WriteLine("Doing NuGet Restore!");
 
-        return "I Like Pie";
+        return new NugetRestoreResults
+        {
+            AllProjectFolders = new[]
+            {
+                "Alpha",
+                "Beta"
+            }
+        };
     }
 
     [Target(BeforeTarget = "Compile")]
-    public void XUnitTest(State something, ITargetManager t)
+    public void XUnitTest(SomeSharedState state, NugetRestoreResults nugetResults)
     {
-        var blah = t.Execute("NugetRestore");
-
-        Console.WriteLine($"NugetRestore said {blah}");
+        foreach(var project in nugetResults.AllProjectFolders)
+        {
+            Console.WriteLine($"NugetRestore did {project}");
+        }
 
         Console.WriteLine("Doing XUnit Test!");
     }
